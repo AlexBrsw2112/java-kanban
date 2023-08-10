@@ -61,8 +61,8 @@ public class KanbanManager {
         if (epics.containsKey(id)) {
             ArrayList<SubTask> newSubtask = new ArrayList<>();
             Epic epic = epics.get(id);
-            for (int i = 0; i < epic.getSubTaskIds().size(); i++) {
-                newSubtask.add(subTasks.get(epic.getSubTaskIds().get(i)));
+            for(int subtaskId : epic.getSubTaskIds()) {
+                newSubtask.add(subTasks.get(subtaskId));
             }
             return newSubtask;
         } else {
@@ -118,10 +118,8 @@ public class KanbanManager {
         }
     }
     public void deleteEpicId(int id) {
-
-        if (epics.containsKey(id)) {
-            Epic epic = epics.get(id);
-            epics.remove(id);
+        Epic epic = epics.remove(id);
+        if (epic !=null) {
             for (Integer subtaskId : epic.getSubTaskIds()) {
                 subTasks.remove(subtaskId);
             }
@@ -152,14 +150,12 @@ public class KanbanManager {
         epics.clear();
     }
     public void allDeleteSubTask() {
-
+        subTasks.clear();
         for (Epic epic : epics.values()) {
-            for (int id : epic.getSubTaskIds()) {
-                SubTask subTask = subTasks.get(id);
-                subTasks.remove(id);
-            }
             epic.getSubTaskIds().clear();
+            epicStatus(epic);
         }
+
     }
     private int generatedId() {
 
@@ -168,31 +164,29 @@ public class KanbanManager {
     private void epicStatus(Epic epic) {
 
         if (epics.containsKey(epic.getId())) {
-            if (epic.getSubTaskIds().size() == 0) {
+            if (!epic.getSubTaskIds().isEmpty()) {
                 epic.setStatus("NEW");
             } else {
                 ArrayList<SubTask> newSubtask = new ArrayList<>();
                 int news = 0;
                 int dones = 0;
 
-                for (int i = 0; i < epic.getSubTaskIds().size(); i++) {
-                    newSubtask.add(subTasks.get(epic.getSubTaskIds().get(i)));
-                }
-                for (SubTask subTask : newSubtask) {
-                    if (subTask.getStatus().equals("DONE")) {
+                  for (int subTaskId : epic.getSubTaskIds()) {
+                     String status = subTasks.get(subTaskId).getStatus();
+                    if (status.equals("DONE")) {
                         dones++;
-                    }
-                    if (subTask.getStatus().equals("NEW")) {
+                    } else if (status.equals("NEW")) {
                         news++;
-                    }
-                    if (subTask.getStatus().equals("IN_PROGRESS")) {
+                    } else {
                         epic.setStatus("IN_PROGRESS");
                         return;
                     }
-                }
+                }  
                 if (dones == epic.getSubTaskIds().size()) {
                     epic.setStatus("DONE");
                 } else if (news == epic.getSubTaskIds().size()) {
+                    epic.setStatus("NEW");
+                } else {
                     epic.setStatus("IN_PROGRESS");
                 }
             }

@@ -5,6 +5,17 @@ public class Task {
     private String description;
     private String status;
 
+    public Task(String name, String description, String status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = "NEW";
+    }
+
     public int getId() {
 
         return id;
@@ -46,19 +57,5 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 '}';
-    }
-
-    public Task() {
-    }
-
-    public Task(String name, String description, String status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-    public Task(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.status = "NEW";
     }
 }

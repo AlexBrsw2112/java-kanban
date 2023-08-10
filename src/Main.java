@@ -60,6 +60,8 @@ public class Main {
         kanbanManager.allDeleteSubTask();
         System.out.println(kanbanManager.getAllSubTasks());
 
+        System.out.println(kanbanManager.getAllEpics());
+
 //      DELETE EPIC
         System.out.println("Удаляем эпик по id: ");
         kanbanManager.deleteEpicId(3);
