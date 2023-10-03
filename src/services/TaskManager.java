@@ -11,6 +11,8 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
+    void remove(int id);
+
     Task saveTask(Task task);
 
     Epic saveEpic(Epic epic);
@@ -25,11 +27,11 @@ public interface TaskManager {
 
     ArrayList<SubTask> getSubTaskByEpicId(int id);
 
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<SubTask> getAllSubTasks();
+    List<SubTask> getAllSubTasks();
 
     void updataTask(Task task);
 
@@ -48,6 +50,4 @@ public interface TaskManager {
     void allDeleteEpic();
 
     void allDeleteSubTask();
-
-    void epicStatus(Epic epic);
 }

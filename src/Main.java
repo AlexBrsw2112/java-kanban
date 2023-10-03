@@ -16,8 +16,10 @@ public class Main {
         taskManager.saveEpic(new Epic("Эпик 2", "Описание эпик 2", Status.NEW));
         taskManager.saveSubTask(new SubTask("Подзадача 1 эпика 1", "123456", Status.NEW, 3));
         taskManager.saveSubTask(new SubTask("Подзадача 2 эпика 1", "123456", Status.NEW, 3));
-        taskManager.saveSubTask(new SubTask("Подзадача 1 эпика 2", "223456", Status.NEW, 4));
+        taskManager.saveSubTask(new SubTask("Подзадача 3 эпика 1", "223456", Status.NEW, 3));
         taskManager.getTaskById(1);
+        taskManager.getTaskById(1);
+        taskManager.getTaskById(2);
         taskManager.getTaskById(2);
         taskManager.getEpicById(3);
         taskManager.getEpicById(4);
@@ -26,10 +28,19 @@ public class Main {
         taskManager.getSubTaskById(7);
         taskManager.getTaskById(1);
         taskManager.getEpicById(3);
-        taskManager.getEpicById(4);
-        taskManager.getEpicById(4);
+        taskManager.getEpicById(3);
+        taskManager.getEpicById(3);
+        taskManager.getEpicById(3);
+        taskManager.getEpicById(3);
+        taskManager.getTaskById(2);
 
         System.out.println("История просмотра: ");
+        System.out.println(taskManager.getHistory());
+        System.out.println("Удаляем задачу 1: ");
+        taskManager.remove(1);
+        System.out.println(taskManager.getHistory());
+        System.out.println("Удаляем эпик и три его подзадачи: ");
+        taskManager.deleteEpicId(3);
         System.out.println(taskManager.getHistory());
     }
 }
