@@ -13,11 +13,11 @@ public interface TaskManager {
 
     void remove(int id);
 
-    Task saveTask(Task task);
+    void saveTask(Task task);
 
-    Epic saveEpic(Epic epic);
+    void saveEpic(Epic epic);
 
-    SubTask saveSubTask(SubTask subTask);
+    void saveSubTask(SubTask subTask);
 
     Task getTaskById(int id);
 
