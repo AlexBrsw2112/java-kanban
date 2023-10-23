@@ -10,14 +10,10 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    private File file;
+    private final File file;
 
-    public FileBackedTaskManager(HistoryManager historyManager) {
-        super(historyManager);
-    }
-
-    public FileBackedTaskManager(HistoryManager historyManager, File file) {
-        super(historyManager);
+    public FileBackedTaskManager(File file) {
+        super(Managers.getDefaultHistory());
         this.file = file;
     }
 
@@ -52,31 +48,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private TaskType getType(Task task) {
-        if (task instanceof  Epic) {
+        if (task.getClass().equals(Epic.class)) {
             return TaskType.EPIC;
-        } else if (task instanceof SubTask) {
+        } else if (task.getClass().equals(SubTask.class)) {
             return TaskType.SUBTASK;
         }
         return TaskType.TASK;
     }
+
     private String getSubTaskByEpicIds(Task task) {
         if (task instanceof SubTask) {
-            return  Integer.toString(((SubTask) task).getEpicId());
+            return Integer.toString(((SubTask) task).getEpicId());
         }
         return "";
     }
 
     private String toString(Task task) {
-        String[] attach = {Integer.toString(task.getId()),
-                            getType(task).toString(),
-                            task.getName(),
-                            task.getStatus().toString(),
-                            task.getDescription(),
-                            getSubTaskByEpicIds(task)};
-        return String.join(",", attach);
+
+        StringBuilder attach = new StringBuilder((Integer.toString(task.getId()) + "," +
+                getType(task).toString() + "," +
+                task.getName() + "," +
+                task.getStatus().toString() + "," +
+                task.getDescription() + "," +
+                getSubTaskByEpicIds(task)));
+
+        return attach.toString();
     }
 
-    static String historyToString(HistoryManager historyManager) {
+    private static String historyToString(HistoryManager historyManager) {
 
         List<Task> historys = historyManager.getHistory();
         StringBuilder line = new StringBuilder();
@@ -98,9 +97,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public void saveTask(Task task) {
-    super.saveTask(task);
-    save();
-}
+        super.saveTask(task);
+        save();
+    }
 
     @Override
     public void saveEpic(Epic epic) {
@@ -189,8 +188,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public    void loadFromFile(File file) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file,StandardCharsets.UTF_8))) {
+    public void loadFromFile(File file) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line = bufferedReader.readLine();
             while (bufferedReader.ready()) {
                 line = bufferedReader.readLine();
@@ -198,10 +197,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     break;
                 }
                 Task task = fromString(line);
-                if (task instanceof Epic epic) {
-                    loadEpic(epic);
-                } else if (task instanceof SubTask subTask) {
-                    loadSubTask(subTask);
+                if (task.getClass().equals(Epic.class)) {
+                    loadEpic((Epic) task);
+                } else if (task.getClass().equals(SubTask.class)) {
+                    loadSubTask((SubTask) task);
                 } else {
                     loadTask(task);
                 }
@@ -251,7 +250,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.saveSubTask(subTask);
     }
 
-    static List<Integer> historyFromString(String str) {
+    private static List<Integer> historyFromString(String str) {
         List<Integer> back = new ArrayList<>();
         if (str != null) {
             String[] id = str.split(",");

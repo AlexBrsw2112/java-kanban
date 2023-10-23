@@ -19,6 +19,8 @@ public class Task {
         this.status = Status.NEW;
     }
 
+    public  Task() {}
+
     public int getId() {
         return id;
     }
