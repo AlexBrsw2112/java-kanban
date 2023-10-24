@@ -57,7 +57,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String getSubTaskByEpicIds(Task task) {
-        if (task instanceof SubTask) {
+        if (task.getType().equals(TaskType.SUBTASK)) {
             return Integer.toString(((SubTask) task).getEpicId());
         }
         return "";
@@ -70,7 +70,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 append(task.getName()).append(",").
                 append(task.getStatus().toString()).append(",").
                 append(task.getDescription()).append(",").
-                append(getSubTaskByEpicIds(task)).append(",").toString();
+                append(getSubTaskByEpicIds(task)).toString();
     }
 
     private static String historyToString(HistoryManager historyManager) {
