@@ -7,6 +7,7 @@ public class ManagerSaveException extends RuntimeException {
 
         super(message);
     }
+
     public ManagerSaveException(String message, IOException e) {
 
         super(message);

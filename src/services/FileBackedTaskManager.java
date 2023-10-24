@@ -44,13 +44,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка! Записи в файл.", e);
         }
-
     }
 
     private TaskType getType(Task task) {
-        if (task.getClass().equals(Epic.class)) {
+
+        if (task.getType().equals(TaskType.EPIC)) {
             return TaskType.EPIC;
-        } else if (task.getClass().equals(SubTask.class)) {
+        } else if (task.getType().equals(TaskType.SUBTASK)) {
             return TaskType.SUBTASK;
         }
         return TaskType.TASK;
@@ -65,14 +65,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private String toString(Task task) {
 
-        StringBuilder attach = new StringBuilder((Integer.toString(task.getId()) + "," +
-                getType(task).toString() + "," +
-                task.getName() + "," +
-                task.getStatus().toString() + "," +
-                task.getDescription() + "," +
-                getSubTaskByEpicIds(task)));
-
-        return attach.toString();
+        return new StringBuilder().append(Integer.toString(task.getId())).append(",").
+                append(getType(task).toString()).append(",").
+                append(task.getName()).append(",").
+                append(task.getStatus().toString()).append(",").
+                append(task.getDescription()).append(",").
+                append(getSubTaskByEpicIds(task)).append(",").toString();
     }
 
     private static String historyToString(HistoryManager historyManager) {
@@ -197,9 +195,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     break;
                 }
                 Task task = fromString(line);
-                if (task.getClass().equals(Epic.class)) {
+                if (task.getType().equals(TaskType.EPIC)) {
                     loadEpic((Epic) task);
-                } else if (task.getClass().equals(SubTask.class)) {
+                } else if (task.getType().equals(TaskType.SUBTASK)) {
                     loadSubTask((SubTask) task);
                 } else {
                     loadTask(task);

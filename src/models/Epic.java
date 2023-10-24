@@ -8,13 +8,18 @@ public class Epic extends Task {
     private final ArrayList<Integer> subTaskIds = new ArrayList<>();
 
     public Epic(String name, String description, Status status) {
+
         super(name, description, status);
+        this.type = TaskType.EPIC;
     }
 
-    public Epic() {}
+    public Epic() {
+    }
 
     public Epic(String name, String description) {
+
         super(name, description);
+        this.type = TaskType.EPIC;
     }
 
     public ArrayList<Integer> getSubTaskIds() {
@@ -43,7 +48,7 @@ public class Epic extends Task {
     public String toString() {
 
         return "\n Epic{" +
-                "subTaskIds" +getSubTaskIds() +
+                "subTaskIds" + getSubTaskIds() +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

@@ -7,19 +7,28 @@ public class Task {
     private String name;
     private String description;
     private Status status;
+    protected TaskType type;
+
+    public TaskType getType() {
+        return type;
+    }
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.type = TaskType.TASK;
     }
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.type = TaskType.TASK;
     }
 
-    public  Task() {}
+    public Task() {
+    }
 
     public int getId() {
         return id;
@@ -59,8 +68,8 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return id == task.id && Objects.equals(name, task.name)
-                             && Objects.equals(description, task.description)
-                             && status == task.status;
+                && Objects.equals(description, task.description)
+                && status == task.status;
     }
 
     @Override
